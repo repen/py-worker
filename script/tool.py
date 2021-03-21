@@ -4,7 +4,7 @@ Licensed under the Apache License v2.0
 http://www.apache.org/licenses/LICENSE-2.0
 """
 
-import logging, hashlib, os
+import logging, hashlib, os, time
 from config import BASE_DIR
 
 def hash_(string):
@@ -12,6 +12,18 @@ def hash_(string):
 
 def listdir_fullpath(d):
     return [os.path.join(d, f) for f in os.listdir(d)]
+
+def timeit(f):
+
+    def timed(*args, **kw):
+        ts = time.time()
+        result = f(*args, **kw)
+        te = time.time()
+        # log.info( "Time run {} {}".format(te-ts, str(f)) )
+        print( "Time run {} {}".format(te-ts, str(f)) )
+        return result
+
+    return timed
 
 def log(name, filename=None):
     # создаём logger
