@@ -3,9 +3,7 @@ Copyright 2021 Andrey Plugin (9keepa@gmail.com)
 Licensed under the Apache License v2.0
 http://www.apache.org/licenses/LICENSE-2.0
 """
-
 import logging, hashlib, os, time
-from config import BASE_DIR
 
 def hash_(string):
     return hashlib.sha1(string.encode()).hexdigest()
@@ -32,7 +30,7 @@ def log(name, filename=None):
 
     # создаём консольный handler и задаём уровень
     if filename:
-        ch = logging.FileHandler(os.path.join(  BASE_DIR, "Log" , filename ))
+        ch = logging.FileHandler(filename)
     else:
         ch = logging.StreamHandler()
 
