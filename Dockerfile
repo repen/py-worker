@@ -5,8 +5,7 @@
 FROM python:3.8-alpine
 
 ENV BASE_DIR /script
-ENV EXTERNAL_WORK true
-ENV REMOTE_SERVER None
+ENV APP_DIR ${BASE_DIR}
 
 WORKDIR ${BASE_DIR}
 
