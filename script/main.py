@@ -9,13 +9,17 @@ import argparse, os
 def script(name='default'):
     from config import config
     from database import AppDatabase
+    from logic import Work
     conf = config[name]
     database = AppDatabase.init_database(conf)
-
     from tool import log
+    # log insert in file
     # logger = log("Main", os.path.join(conf.APP_DIR, "log/main.log"))
     logger = log("Main")
-    logger.info(f"Start script with config {name}")
+    logger.info(f"> Starting work the script with configuration [{name}]")
+    work = Work(conf, database)
+    work.run()
+    logger.info(f"< End worked the script")
 
 
 
@@ -25,7 +29,7 @@ if __name__ == '__main__':
         description='Running the application.'
     )
 
-    parser.add_argument('-c', '--config', dest='config', type=str, required=True,
+    parser.add_argument('-c', '--config', dest='config', type=str, default="default",
                         help='An example:\npython main.py --config development|testing|default')
 
     args = parser.parse_args()

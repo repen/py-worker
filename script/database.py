@@ -1,3 +1,9 @@
+"""
+Copyright 2021 Andrey Plugin (9keepa@gmail.com)
+Licensed under the Apache License v2.0
+http://www.apache.org/licenses/LICENSE-2.0
+"""
+
 import os
 from config import BaseEnvironment, ProductionEnvironment, \
     DevelopmentEnvironment, TestingEnvironment
