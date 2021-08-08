@@ -30,7 +30,7 @@ if __name__ == '__main__':
     )
 
     parser.add_argument('-c', '--config', dest='config', type=str, default="default",
-                        help='An example:\npython main.py --config development|testing|default')
+                        help='An example:\npython main.py --config production|development|testing|default')
 
     args = parser.parse_args()
     script(args.config)

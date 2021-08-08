@@ -10,8 +10,14 @@ from config import BaseEnvironment, ProductionEnvironment, \
 from typing import Union
 
 class Database:
-    def __init__(self):
-        pass
+    def __init__(self, config: Union[BaseEnvironment, ProductionEnvironment,
+                             DevelopmentEnvironment, TestingEnvironment]):
+        self._db = None
+
+    def get_db(self):
+        return self._db
+
+
 
 class AppDatabase:
 
@@ -25,5 +31,5 @@ class AppDatabase:
     def get_db(config: Union[BaseEnvironment, ProductionEnvironment,
                              DevelopmentEnvironment, TestingEnvironment]):
         if AppDatabase._db is None:
-            AppDatabase._db = Database()
+            AppDatabase._db = Database(config).get_db()
         return AppDatabase._db
