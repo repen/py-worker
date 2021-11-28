@@ -7,13 +7,15 @@ import argparse, os
 
 
 def script(name='default'):
+    # ------ init var
     from config import config
     from database import AppDatabase
-    from logic import Work
     conf = config[name]
     database = AppDatabase.init_database(conf)
+    # ----------------
+    from logic import Work
     from tool import log
-    # log insert in file
+    # log with file
     # logger = log("Main", os.path.join(conf.APP_DIR, "log/main.log"))
     logger = log("Main")
     logger.info(f"> Starting work the script with configuration [{name}]")
