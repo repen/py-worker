@@ -22,6 +22,8 @@ class Database:
         #     max_connections=2,
         # )
         self.db = None
+        # self.db = SqliteDatabase(DevelopmentEnvironment.SQLITE_PATH,
+        #                          pragmas={'journal_mode': 'wal', })
 
     def get(self):
         return self.db
