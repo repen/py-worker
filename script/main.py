@@ -6,20 +6,20 @@ http://www.apache.org/licenses/LICENSE-2.0
 import argparse, os
 
 
-def script(name='default'):
+def script(args):
     # ------ init var
     from config import config
     from database import AppDatabase
-    conf = config[name]
-    database = AppDatabase.init_database(conf)
+    conf = config[args.config]
+    AppDatabase.init_database(conf)
     # ----------------
     from logic import Work
     from tool import log
     # log with file
     # logger = log("Main", os.path.join(conf.APP_DIR, "log/main.log"))
     logger = log("Main")
-    logger.info(f"> Starting work the script with configuration [{name}]")
-    work = Work(conf, database)
+    logger.info(f"> Starting work the script with configuration [{args.config}]")
+    work = Work(conf, AppDatabase())
     work.run()
     logger.info(f"< End worked the script")
 
@@ -35,4 +35,4 @@ if __name__ == '__main__':
                         help='An example:\npython main.py --config production|development|testing|default')
 
     args = parser.parse_args()
-    script(args.config)
+    script(args)
