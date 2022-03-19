@@ -3,53 +3,45 @@ Copyright 2022 Andrey Plugin (9keepa@gmail.com)
 Licensed under the Apache License v2.0
 http://www.apache.org/licenses/LICENSE-2.0
 """
-from config import BaseEnvironment, ProductionEnvironment, \
-    DevelopmentEnvironment, TestingEnvironment
+import os
+from config import ProductionEnvironment, \
+    DevelopmentEnvironment, TestingEnvironment, BaseEnvironment
 from typing import Union
-# from playhouse.pool import PooledMySQLDatabase
+# from peewee import SqliteDatabase
 
-class Database:
-    def __init__(self,
-                 database_name="",
-                 database_user="",
-                 database_password="",
-                 database_port="3600",
-                 database_host="localhost"
-                 ):
 
-        # self.db = PooledMySQLDatabase(
-        #     database_name,
-        #     user=database_user,
-        #     password=database_password,
-        #     port=int(database_port),
-        #     host=database_host,
-        #     stale_timeout = None,
-        #     max_connections=2,
-        # )
+class BaseDatabase:
+    def __init__(self, config: Union[DevelopmentEnvironment,
+                                     ProductionEnvironment,
+                                     BaseEnvironment,
+                                     TestingEnvironment]):
         self.db = None
-        # self.db = SqliteDatabase(DevelopmentEnvironment.SQLITE_PATH,
-        #                          pragmas={'journal_mode': 'wal', })
 
-    def get(self):
+    def get_db(self):
         return self.db
 
+
+class DatabaseSqlite(BaseDatabase):
+    def __init__(self, config):
+        super().__init__(config)
+        pass
+        # self.db = SqliteDatabase(config.SQLITE_PATH, pragmas={'journal_mode': 'wal', })
 
 
 class AppDatabase:
 
-    _db = None
+    _db: dict = dict()
 
     @staticmethod
-    def init_database(config: Union[TestingEnvironment, 
-                                    DevelopmentEnvironment, ProductionEnvironment]):
-        AppDatabase._init_database(config)
+    def init_database(config):
+        sqlite_db = DatabaseSqlite(config)
+        AppDatabase._db["sqlite_db"] = sqlite_db
 
     @staticmethod
-    def get_database():
-        return AppDatabase._db
+    def get_db(name):
+        if name not in AppDatabase._db.keys():
+            raise ValueError(f"Name {name} database not found")
+        return AppDatabase._db[name].get_db()
 
-    @staticmethod
-    def _init_database(config: Union[TestingEnvironment, 
-                                     DevelopmentEnvironment, ProductionEnvironment]):
-
-        AppDatabase._db = Database().get()
+    def __init__(self):
+        pass
