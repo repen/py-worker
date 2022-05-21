@@ -17,3 +17,4 @@
 
 1. нужно сбилдить контейнер со скриптом выполнив команду `docker build -t script_image:latest .`.
 2. запуск контейнера `docker run --name container_name -d script_image:latest`
+3. удаление контейнера `docker rm -f container_name`
