@@ -3,23 +3,17 @@ Copyright 2022 Andrey Plugin (9keepa@gmail.com)
 Licensed under the Apache License v2.0
 http://www.apache.org/licenses/LICENSE-2.0
 """
-import argparse, os
+import argparse
 
 
-def script(args):
-    # ------ init var
-    from config import config
+def script(config):
     from database import AppDatabase
-    conf = config[args.config]
-    AppDatabase.init_database(conf)
-    # ----------------
+    AppDatabase.init_database(config)
     from logic import Work
     from tool import log
-    # log with file
-    # logger = log("Main", os.path.join(conf.APP_DIR, "log/main.log"))
-    logger = log("Main")
-    logger.info(f"> Starting work the script with configuration [{args.config}]")
-    work = Work(conf, AppDatabase())
+    logger = log(__name__)
+    logger.info(f"> Starting work the script with configuration [{config.ENV}]")
+    work = Work(config, AppDatabase())
     work.run()
     logger.info(f"< End worked the script")
 
@@ -35,4 +29,13 @@ if __name__ == '__main__':
                         help='An example:\npython main.py --config production|development|testing|default')
 
     args = parser.parse_args()
-    script(args)
+
+    from config import config
+
+    conf = config[args.config]
+
+    args_dict = {k.upper():v for k,v in vars(args).items()}
+    for k, v in args_dict.items():
+        setattr(conf, k, v)
+
+    script(conf)

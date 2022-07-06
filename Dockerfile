@@ -12,7 +12,7 @@ USER pyuser
 
 ENV APP_DIR ${DIR_SCRIPT}
 
-WORKDIR ${BASE_DIR}
+WORKDIR ${DIR_SCRIPT}
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
